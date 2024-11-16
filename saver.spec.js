@@ -6,18 +6,17 @@ vi.mock('node:fs');
 
 describe('getTeaByName', () => {
   test('should return the correct tea when name exists', () => {
-    const teaData = [{ id: 1, name: 'Green Tea', description: 'Healthy tea' }];
-    
+    const teaData = [{ id: 1, name: 'Purple Tea', description: 'Delicious tea' }];
     
     fs.readFileSync.mockReturnValueOnce(JSON.stringify(teaData));
     fs.existsSync.mockReturnValueOnce(true); 
 
-    const tea = getTeaByName('Green Tea');
+    const tea = getTeaByName('Purple Tea');
     expect(tea).toEqual(teaData[0]); 
   });
 
   test('should return undefined when name does not exist', () => {
-    const teaData = [{ id: 1, name: 'Green Tea', description: 'Healthy tea' }];
+    const teaData = [{ id: 1, name: 'Purple Tea', description: 'Delicious tea' }];
     fs.readFileSync.mockReturnValueOnce(JSON.stringify(teaData));
     fs.existsSync.mockReturnValueOnce(true); 
 
@@ -29,12 +28,10 @@ describe('getTeaByName', () => {
     fs.existsSync.mockReturnValueOnce(true);
     fs.readFileSync.mockReturnValueOnce('[]'); 
 
-    const tea = getTeaByName('Green Tea');
+    const tea = getTeaByName('Purple Tea');
     expect(tea).toBeUndefined(); 
   });
 });
-
-
 
 describe('generateNewTeaId', () => {
   test('should return a unique id', () => {
@@ -49,7 +46,7 @@ describe('generateNewTeaId', () => {
 describe('saveTea', () => {
   test('should add a new tea with unique id and name', () => {
     const initialData = [];
-    const newTea = { id: 1, name: 'Green Tea', description: 'Healthy tea' };
+    const newTea = { id: 1, name: 'Purple Tea', description: 'Delicious tea' };
 
     fs.readFileSync.mockReturnValue(JSON.stringify(initialData));
     fs.existsSync.mockReturnValue(true);
@@ -63,8 +60,8 @@ describe('saveTea', () => {
   });
 
   test('should update tea if id matches an existing one', () => {
-    const initialData = [{ id: 1, name: 'Green Tea', description: 'Old desc' }];
-    const updatedTea = { id: 1, name: 'Green Tea', description: 'Updated desc' };
+    const initialData = [{ id: 1, name: 'Purple Tea', description: 'Old desc' }];
+    const updatedTea = { id: 1, name: 'Purple Tea', description: 'Updated desc' };
 
     fs.readFileSync.mockReturnValue(JSON.stringify(initialData));
     fs.existsSync.mockReturnValue(true);
@@ -78,19 +75,19 @@ describe('saveTea', () => {
   });
 
   test('should throw an error if name exists with a different id', () => {
-    const initialData = [{ id: 1, name: 'Green Tea', description: 'Healthy tea' }];
-    const conflictingTea = { id: 2, name: 'Green Tea', description: 'New tea' };
+    const initialData = [{ id: 1, name: 'Purple Tea', description: 'Delicious tea' }];
+    const conflictingTea = { id: 2, name: 'Purple Tea', description: 'New tea' };
 
     fs.readFileSync.mockReturnValue(JSON.stringify(initialData));
     fs.existsSync.mockReturnValue(true);
 
     expect(() => saveTea(conflictingTea)).toThrowError(
-      'Tea with name Green Tea already exists'
+      'Tea with name Purple Tea already exists'
     );
   });
 
   test('should throw an error if id exists with a different name', () => {
-    const initialData = [{ id: 1, name: 'Green Tea', description: 'Healthy tea' }];
+    const initialData = [{ id: 1, name: 'Purple Tea', description: 'Delicious tea' }];
     const conflictingTea = { id: 1, name: 'Black Tea', description: 'New tea' };
 
     fs.readFileSync.mockReturnValue(JSON.stringify(initialData));
